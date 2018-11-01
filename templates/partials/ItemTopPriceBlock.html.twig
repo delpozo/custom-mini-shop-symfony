@@ -1,0 +1,19 @@
+<h3 class="pz-prod-head" id="pz-prod-head-{{ product.productID }}" data-block-root="#pz-product-wrapper-{{ product.productID }}">
+	<span id="pz-price-box-{{ product.productID }}"
+	      class="pz-price-box"
+	      data-block-root="#pz-product-wrapper-{{ product.productID }}">
+		{% if product.salePrice is not empty and product.onSale %}
+			<span class="fa fa-tags"></span>&nbsp;{{ product.activeCurrency }}
+			{{ product.salePrice | formatPrice }}
+		{% else %}
+			{{ product.activeCurrency }} {{ product.normalPrice | formatPrice }}
+		{% endif %}
+	</span>
+	<small id="pz-norm-price-box-{{ product.productID }}" 
+	       class="pz-norm-price-box pz-strike" 
+	       data-block-root="#pz-product-wrapper-{{ product.productID }}">
+		{% if product.salePrice is not empty and product.onSale %}
+			{{ product.activeCurrency }} {{ product.normalPrice | formatPrice }}
+		{% endif %}
+	</small>
+</h3>

@@ -1,0 +1,27 @@
+<div id="pz-variant-slot-{{ variant.aid }}"
+     class="pz-variant-slot"
+     data-block-root="#pz-product-wrapper-{{ variant.pid }}">
+	<div id="pz-variant-link-{{ variant.aid }}"
+	     class="pz-variant-link"
+	     href="http://web-services.pz/shop/poiz-shop/{{ variant.pid }}/{{ variant.cid }}/{{ variant.aid }}"
+	     data-block-root="#pz-product-wrapper-{{ variant.pid }}">
+		<img id="pz-variant-pix-{{ variant.aid }}"
+		     class="pz-variant-pix thumbnail"
+		     src="/{{ variant.pix }}"
+		     style="width: 100%;"
+		     data-pid="{{ variant.pid }}"
+		     data-aid="{{ variant.aid }}"
+		     data-cid="{{ variant.cid }}"
+		     data-action="{{ variant.action }}"
+		     data-processor="{{ variant.processor }}"
+		     data-endpoint="{{ path('rte_rest_get_variants', {'aid':variant.aid,'cid':variant.cid, 'pid':variant.pid}) }}"
+		     data-block-root="#pz-product-wrapper-{{ variant.pid }}">
+	</div>
+	<aside id="pz-color-slot-{{ variant.aid }}"
+	       class="pz-color-slot"
+	       data-block-root="#pz-product-wrapper-{{ variant.pid }}">
+		<span class="pz-color-unit"
+		      style="background:{{ variant.color }}"></span>
+		<span class="pz-price-unit">{{ variant.price }}</span>
+	</aside>
+</div>

@@ -1,0 +1,25 @@
+<div class="pz-pix-box pz-pix-wrapper"
+     id="pz-pix-box-{{ product.productID }}"
+     data-block-root="#pz-product-wrapper-{{ product.productID }}">
+	<a id="pz-pix-wrap-bottom-{{ product.productID }}"
+	   class="pz-pix-wrap-bottom"
+	   href="{{ path('rte_product_details', {'alias':product.productAlias, 'aid':product.productAID, 'pid':product.productID, 'cid':product.productCID}) }}"
+	   data-block-root="#pz-product-wrapper-{{ product.productID }}">
+		<img id="pz-prod-pix-{{ product.productID }}"
+		     class="pz-prod-pix thumbnail"
+		     src="/{{ product.productPix }}"
+		     style="width: 100%;"
+		     data-block-root="#pz-product-wrapper-{{ product.productID }}">
+	
+	</a>
+	{% set variantsData = getVariantsData(product, 0) %}
+	{% if variantsData is not empty %}
+		<div id="pz-variants-block-{{ product.productID }}"
+		     class="col-md-12 pz-variants-block pz-inner-wrap pz-hide-flex"
+		     data-block-root="#pz-product-wrapper-{{ product.productID }}">
+		{% for variant in variantsData %}
+			{% include 'partials/ItemVariantBlock.html.twig' with {'variant':variant} %}
+		{% endfor %}
+		</div>
+	{% endif %}
+</div>

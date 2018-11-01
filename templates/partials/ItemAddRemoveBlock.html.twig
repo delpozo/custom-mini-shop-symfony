@@ -1,0 +1,56 @@
+{% set QT = getOrderTotalAndQuantity(product) %}
+{% if QT.quantity > 0 %}
+	{% set qtValue = pzConcat(QT.quantity, "&nbsp;&nbsp;|&nbsp;&nbsp;",  product.activeCurrency, " ", QT.total) %}
+{% else %}
+	{% set qtValue = "--" %}
+{% endif %}
+
+{% if product.onSale %}
+	{%  set price = product.salePrice  %}
+{% else %}
+	{%  set price = product.normalPrice  %}
+{% endif %}
+<div id="pz-qty-count-order-wrapper-{{ product.productID }}"
+     class="pz-qty-count-order-wrapper" 
+     data-block-root="#pz-product-wrapper-{{ product.productID }}">
+	<span data-block-root="#pz-product-wrapper-{{ product.productID }}"
+	      data-processor="/processors/variant-processor.php" 
+	      data-gif="/images/icons/pz-loader-05.gif"
+	      data-price="{{ price }}"
+	      data-currency="{{ product.activeCurrency }}"
+	      data-endpoint="{{ path('rte_rest_add_to_store', {'aid':product.productAID,'cid':product.productCID, 'pid':product.productID, 'price':price, 'qty':1}) }}"
+	      id="pz-add-to-cart-icon-{{ product.productID }}"
+	      class="fa fa-plus pz-add-to-cart-icon" >
+	</span>
+	<div id="pz-qty-count-box-{{ product.productID }}" 
+	     class="pz-qty-count-box" 
+	     data-block-root="#pz-product-wrapper-{{ product.productID }}">
+		<span id="pz-qty-wrapper-{{ product.productID }}" 
+		      class="pz-qty-wrapper" 
+		      data-block-root="#pz-product-wrapper-{{ product.productID }}">
+			<input data-block-root="#pz-product-wrapper-{{ product.productID }}"
+			       data-gif="/images/icons/pz-loader-05.gif"
+			       data-price="{{ price }}"
+			       data-currency="{{ product.activeCurrency }}" 
+			       id="pz-qty-{{ product.productID }}" 
+			       type="number"
+			       class="pz-qty pz-qty-field" 
+			       placeholder="1" />
+		</span>
+		<span data-block-root="#pz-product-wrapper-{{ product.productID }}"
+		      data-gif="/images/icons/pz-loader-05.gif"
+		      data-price="{{ price }}"
+		      data-currency="{{ product.activeCurrency }}" 
+		      id="pz-count-slot-{{ product.productID }}" 
+		      class="pz-count-slot">{{ qtValue | raw }}</span>
+	</div>
+	<span data-block-root="#pz-product-wrapper-{{ product.productID }}"
+	      data-processor="/processors/variant-processor.php" 
+	      data-gif="/images/icons/pz-loader-05.gif"
+	      data-price="{{ price }}"
+	      data-currency="{{ product.activeCurrency }}" 
+	      id="pz-delete-from-cart-icon-{{ product.productID }}"
+	      data-endpoint="{{ path('rte_rest_delete_from_store', {'aid':product.productAID,'cid':product.productCID, 'pid':product.productID, 'price':price, 'qty':1}) }}"
+	      class="fa fa-minus pz-delete-from-cart-icon" >
+	</span>
+</div>

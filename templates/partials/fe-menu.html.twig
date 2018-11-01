@@ -1,0 +1,24 @@
+
+<nav class="col-md-12">
+	{% set menuItems    = getMenuItems() %}
+	{% set cid          = app.request.get('cid') %}
+	{% if menuItems is not empty %}
+        <ul class="list-group list-unstyled pz-list-group">
+			{% for menuItem in menuItems %}
+				{% if cid  is empty and loop.index0 == 0 %}
+					{% set activeClass = ' active pz-active' %}
+				{% elseif cid == menuItem.id %}
+					{% set activeClass = ' active pz-active' %}
+				{% else %}
+					{% set activeClass = '' %}
+				{% endif %}
+                <li class="list-group-item pz-list-item pz-cat-list-item {{ activeClass }}">
+                    <a class="pz-menu{{ activeClass }}"
+                       href="{{ path('rte_shop', {'cid':menuItem.id, 'alias':menuItem.alias }) }}"
+                       id="pz-menu-{{ menuItem.id }}"
+                       target="_self">{{ menuItem.title }}</a>
+                </li>
+			{% endfor %}
+        </ul>
+	{% endif %}
+</nav>

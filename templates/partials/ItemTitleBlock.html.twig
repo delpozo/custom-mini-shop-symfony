@@ -1,0 +1,21 @@
+<h3 id="pz-item-head-{{ product.productID }}"
+    class="pz-item-head pz-prod-head prod-head pz-prod-head-title"
+    data-block-root="#pz-product-wrapper-{{ product.productID }}">
+	<span id="pz-head-title-{{ product.productID }}"
+	      class="pz-head-title"
+	      data-block-root="#pz-product-wrapper-{{ product.productID }}">{{ product.productTitle | raw}}
+	</span>
+	<span id="pz-item-head-link-{{ product.productID }}"
+	      class="pz-item-head-link"
+	      data-currency="{{ product.activeCurrency }}"
+	      data-link="{{ path('rte_product_details', {'alias':product.productAlias, 'aid':product.productAID, 'pid':product.productID, 'cid':product.productCID}) }}"
+	      data-endpoint="{{ path('rte_rest_get_shopping_cart', {'aid':product.productAID,'cid':product.productCID, 'pid':product.productID}) }}"
+	      data-block-root="#pz-product-wrapper-{{ product.productID }}">
+		<span id="pz-cart-icon-{{ product.productID }}"
+		      class="fa fa-shopping-basket pz-cart-icon pz-mini-cart-icon"
+		      data-currency="{{ product.activeCurrency }}"
+		      data-endpoint="{{ path('rte_rest_get_shopping_cart', {'aid':product.productAID,'cid':product.productCID, 'pid':product.productID}) }}"
+		      data-block-root="#pz-product-wrapper-{{ product.productID }}">
+		</span>
+	</span>
+</h3>

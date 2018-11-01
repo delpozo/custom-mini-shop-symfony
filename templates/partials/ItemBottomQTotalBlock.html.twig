@@ -1,0 +1,13 @@
+{% set QT = getOrderTotalAndQuantity(product) %}
+<div class="pz-qty-total-wrapper-bottom" data-block-root="#pz-product-wrapper-{{ product.productID }}">
+	<h3 class="pz-prod-head" data-block-root="#pz-product-wrapper-{{ product.productID }}">
+		<span id="pz-qty-bottom-{{ product.productID }}"  class="pz-qty-bottom" data-block-root="#pz-product-wrapper-{{ product.productID }}">
+			<span class="pz-sub-text-pod" data-block-root="#pz-product-wrapper-{{ product.productID }}">{{ 'QUANTITY' | trans }}</span>
+			<span id="pz-sub-val-qty-{{ product.productID }}" class="pz-sub-val-pod" data-block-root="#pz-product-wrapper-{{ product.productID }}">{{ QT.quantity }}</span>
+		</span>
+		<span id="pz-price-bottom-{{ product.productID }}" class="pz-price-bottom" data-block-root="#pz-product-wrapper-{{ product.productID }}">
+		<span class="pz-sub-text-pod" data-block-root="#pz-product-wrapper-{{ product.productID }}">{{ 'TOTAL' | trans }} [{{ product.activeCurrency }}]:</span>
+		<span id="pz-sub-val-total-{{ product.productID }}" class="pz-sub-val-pod" data-block-root="#pz-product-wrapper-{{ product.productID }}">{{ QT.total }}</span>
+		</span>
+	</h3>
+</div>

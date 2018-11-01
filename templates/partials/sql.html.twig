@@ -1,0 +1,16 @@
+<div class="col-md-12 no-lr-pad pz-form-wrapper" id="pz-form-wrapper">
+{% set sql = "SELECT S.*, A.name AS Artist, G.name AS Genre, CA.image AS Cover
+              FROM song AS S
+              LEFT OUTER JOIN artist    AS A  ON A.id  = S.artist_id
+              LEFT OUTER JOIN genre     AS G  ON G.id  = S.genre_id
+              LEFT OUTER JOIN cover_art AS CA ON CA.id = S.cover_art_id
+              WHERE A.id=:AID"
+%}
+{% set retType = "1" %}
+{% set socRayParams = {"AID":"7"} %}
+{% set res = runSQL(sql, socRayParams, retType) %}
+{{ pzDump(res) }}
+	
+	<h1>{{ "2017-12-11 23:44" | dateDiff4Humans }}</h1>
+</div>
+

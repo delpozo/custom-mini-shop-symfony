@@ -1,0 +1,33 @@
+{% extends 'master4shop.html.twig' %}
+
+{% set levels = 0 %}
+{% block headMeta %}
+{% endblock %}
+
+{% block pageTitle %}
+	Products - {{ products[0].categoryName}}
+{% endblock %}
+
+{% block content %}
+	{% if products is not empty %}
+		<div class="pz-wrapper-block pz-col-12 pz-cue-box no-lr-pad ad_lvl_{{ levels }} col-md-12">
+		{% for product in products %}
+			{% if (loop.index0 % 4) == 0 and loop.index0 > 0 %}
+				{% set levels = levels+1 %}
+				</div><div class="pz-wrapper-block pz-col-12 pz-cue-box no-lr-pad ad_lvl_{{ levels }} col-md-12">
+			{% endif %}
+	
+			<div class="col-md-3">
+				<div class="pz-product-wrapper" id="pz-product-wrapper-{{ product.productID }}">
+					{% include 'partials/ItemTitleBlock.html.twig' with {'product' : product} %}
+					{% include 'partials/ItemAddRemoveBlock.html.twig' with {'product' : product} %}
+					{% include 'partials/ItemTopPriceBlock.html.twig' with {'product' : product} %}
+					{% include 'partials/ItemSocialMediaLinksBlock.html.twig' with {'product' : product} %}
+					{% include 'partials/ItemImageBlock.html.twig' with {'product' : product} %}
+					{% include 'partials/ItemBottomQTotalBlock.html.twig' with {'product' : product} %}
+				</div>
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}

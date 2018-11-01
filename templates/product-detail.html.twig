@@ -1,0 +1,37 @@
+{% extends 'master4shop.html.twig' %}
+
+{% set levels = 0 %}
+{% block headMeta %}
+{% endblock %}
+
+{% block pageTitle %}
+	Product Details - {{ products[0].productTitle | raw }} - {{ products[0].categoryName | raw }}
+{% endblock %}
+
+{% block content %}
+	{% if products is not empty %}
+		{% set product = products[0] %}
+		<div class="pz-wrapper-block pz-col-12 pz-detail-wrapper no-lr-pad ad_lvl_1 col-md-12">
+			<div class="col-md-7 pz-detail-image-section">
+				<div class="pz-product-wrapper" id="pz-product-wrapper-{{ product.productID }}">
+					{% include 'partials/ItemTitleBlock.html.twig' with {'product' : product} %}
+					{% include 'partials/ItemAddRemoveBlock.html.twig' with {'product' : product} %}
+					{% include 'partials/ItemTopPriceBlock.html.twig' with {'product' : product} %}
+					{% include 'partials/ItemSocialMediaLinksBlock.html.twig' with {'product' : product} %}
+					{% include 'partials/ItemImageBlock.html.twig' with {'product' : product} %}
+					{% include 'partials/ItemBottomQTotalBlock.html.twig' with {'product' : product} %}
+				</div>
+			</div>
+			
+			<aside class="col-md-5 pz-desc-block">
+				<div class="well pz-description-pod">
+					<h3 class="pz-full-desc-heading" style="text-align: center;">Full Description</h3>
+					<article class="well">
+						<!-- <h6>{{ product.productTitle | raw }}</h6> -->
+						{{ product.productDescription | raw }}
+					</article>
+				</div>
+			</aside>
+		</div>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,7 @@
+/var/cache/*
+/var/log/*
+
+/vendor/
+/src/inc
+/public/.sass-cache/*
+/.idea
