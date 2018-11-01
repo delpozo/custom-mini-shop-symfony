@@ -93,7 +93,7 @@
 		private $description;
 
 		/**
-		 * @ORM\ManyToOne(targetEntity="App\Entity\PoizBasketProducts")
+		 * @ORM\ManyToOne(targetEntity="App\Entity\PoizBasketProducts", inversedBy="_images")
 		 * @ORM\JoinColumn(name="prod_id", referencedColumnName="id")
 		 */
 		private $_products;

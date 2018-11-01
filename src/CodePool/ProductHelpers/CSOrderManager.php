@@ -28,7 +28,8 @@ class CSOrderManager {
 	 * @var Segment
 	 */
 	protected static $segment;
-	protected static $order_context_obj ;
+	protected static $order_context_obj;
+	public static $useArrayStore = false;
 
 
 	public static function initialize_store(){

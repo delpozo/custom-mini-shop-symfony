@@ -120,8 +120,8 @@
 		private $_maker;
 
 		/**
-		 * @var string
-		 * @ORM\ManyToOne(targetEntity="App\Entity\PoizBasketProducts")
+		 * @var \Doctrine\Common\Collections\ArrayCollection
+		 * @ORM\ManyToOne(targetEntity="App\Entity\PoizBasketProducts", inversedBy="_attributes")
 		 * @ORM\JoinColumn(name="prod_id", referencedColumnName="id")
 		 */
 		private $_products;

@@ -195,14 +195,15 @@ LEFT JOIN `poiz_basket_images`          AS  IMG ON PROD.id=IMG.prod_id AND IMG.a
 LEFT JOIN `poiz_basket_prices`          AS  PRX ON PROD.id=PRX.prod_id AND PRX.attrib_id=ATR.id
 LEFT JOIN `poiz_basket_manufacturers`   AS  MAN ON ATR.manufacturer=MAN.id
 
-WHERE PROD.cat_id = {$categoryID}
-AND CAT.id = {$categoryID}
-AND CAT.published=1
+WHERE CAT.published=1
 AND PROD.published=1
 AND ATR.published=1
 SQL;
-			if($pid){
-			}
+			
+			
+			
+			$sql .= $categoryID ? " AND  PROD.cat_id={$categoryID} "   . PHP_EOL : "";
+			$sql .= $categoryID ? " AND  CAT.id={$categoryID} "         . PHP_EOL : "";
 			$sql .= $aid ? " AND  ATR.id={$aid} "   . PHP_EOL : "";
 			$sql .= $pid ? " AND PROD.id={$pid} "   . PHP_EOL : "";
 			$sql .=" GROUP BY PROD.id " . PHP_EOL;

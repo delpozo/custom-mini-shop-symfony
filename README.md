@@ -17,6 +17,10 @@ This Symfony-4 Micro-App is not documented. Anyways; All Methods/Functions have 
 instantly what each of them does in the Program. 
 
 
+Care was not taken to conform this Micro-App to the Responsive Design Specifications.
+Although, Bootstrap was used and a couple of custom CSS introduced; the App is not expected to be responsive.
+
+
 A Few Screenshots were also added to the top Directory with the name: **-SCREENSHOTS-**.
 There are no Admin Interfaces to this App. This means, you can't manage the Shop like you would 
 in an Ideal Case. Similarly, the Checkout is also not functional since this is only a Mock anyways.

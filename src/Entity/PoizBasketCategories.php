@@ -93,7 +93,8 @@
 		private $params;
 
 		/**
-		 * @ORM\OneToOne(targetEntity="App\Entity\PoizBasketProducts")
+		 * @ORM\OneToMany(targetEntity="App\Entity\PoizBasketProducts", mappedBy="category")
+		 * @ORM\JoinColumn(name="id", referencedColumnName="prod_id")
 		 */
 		private $products;
 

@@ -6,11 +6,13 @@
 	
 	namespace App\Controller;
 	
+	require_once __DIR__ . "/../CodePool/_DEFINITIONS_.php";
 	
 	use App\CodePool\Entity\ProductBotProxy;
 	use App\CodePool\ProductHelpers\CSCartHelper;
 	use App\CodePool\ProductHelpers\CSOrderManager;
 	use Doctrine\DBAL\Connection;
+	use Doctrine\DBAL\DBALException;
 	use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 	use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 	use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,7 +50,13 @@
 				];
 				$payLoad    = array_merge($payLoad, $orderPL);
 			}
-			return new JsonResponse($payLoad);
+			$header = [
+				'Access-Control-Allow-Origin'   => '*',
+				'Access-Control-Allow-Methods'  => 'GET, POST, OPTIONS',
+				'Access-Control-Max-Age'        => '86400',
+				'Content-Type'                  => 'application/json',
+			];
+			return new JsonResponse($payLoad, 200, $header);
 		}
 		
 		/**
@@ -73,7 +81,13 @@
 				$payLoad    = new \stdClass();
 			}
 			$payLoad->cart  = utf8_encode(CSCartHelper::render_cart("mini"));
-			return new JsonResponse($payLoad);
+			$header = [
+				'Access-Control-Allow-Origin'   => '*',
+				'Access-Control-Allow-Methods'  => 'GET, POST, OPTIONS',
+				'Access-Control-Max-Age'        => '86400',
+				'Content-Type'                  => 'application/json',
+			];
+			return new JsonResponse($payLoad, 200, $header);
 		}
 		
 		/**
@@ -91,7 +105,13 @@
 				$payLoad = new \stdClass();
 			}
 			$payLoad->cart  = CSCartHelper::render_cart("mini");
-			return new JsonResponse($payLoad);
+			$header = [
+				'Access-Control-Allow-Origin'   => '*',
+				'Access-Control-Allow-Methods'  => 'GET, POST, OPTIONS',
+				'Access-Control-Max-Age'        => '86400',
+				'Content-Type'                  => 'application/json',
+			];
+			return new JsonResponse($payLoad, 200, $header);
 		}
 		
 		/**
@@ -109,7 +129,13 @@
 				$payLoad = new \stdClass();
 			}
 			$payLoad->cart  = CSCartHelper::render_cart("mini");
-			return new JsonResponse($payLoad);
+			$header = [
+				'Access-Control-Allow-Origin'   => '*',
+				'Access-Control-Allow-Methods'  => 'GET, POST, OPTIONS',
+				'Access-Control-Max-Age'        => '86400',
+				'Content-Type'                  => 'application/json',
+			];
+			return new JsonResponse($payLoad, 200, $header);
 		}
 		
 		/**
@@ -125,6 +151,137 @@
 			$cart           = CSOrderManager::delete_all_of_same_aid($cid, $pid, $aid, $price, $qty);
 			$payLoad        = new \stdClass();
 			$payLoad->cart  = $cart;
-			return new JsonResponse($payLoad);
+			$header = [
+				'Access-Control-Allow-Origin'   => '*',
+				'Access-Control-Allow-Methods'  => 'GET, POST, OPTIONS',
+				'Access-Control-Max-Age'        => '86400',
+				'Content-Type'                  => 'application/json',
+			];
+			return new JsonResponse($payLoad, 200, $header);
+		}
+		
+		
+		
+		/**
+		 * @Route("/shop/api/v1/products/fetch_products_by_cid/{cid}", name="rte_rest_fetch_products_by_cid", defaults={"cid"=1})
+		 * @param int $cid
+		 * @param Request $request
+		 *
+		 * @return \Symfony\Component\HttpFoundation\Response
+		 */
+		public function fetchAllProductsByCategoryID(Request $request, $cid){
+			/**@var \Doctrine\DBAL\Connection $conn*/
+			$conn       = $this->getDoctrine()->getConnection();
+			$dbDriver   = $conn->getParams()['driver'];
+			$sql        = (new ProductBotProxy())->getSQL($dbDriver, $cid);
+			
+			try {
+				$statement = $conn->prepare( $sql );
+			} catch ( DBALException $e ) {
+			}
+			$statement->execute();
+			$resultSet  = $statement->fetchAll(\PDO::FETCH_OBJ);
+			$header = [
+				'Access-Control-Allow-Origin'   => '*',
+				'Access-Control-Allow-Methods'  => 'GET, POST, OPTIONS',
+				'Access-Control-Max-Age'        => '86400',
+				'Content-Type'                  => 'application/json',
+			];
+			return new JsonResponse($resultSet, 200, $header);
+		}
+		
+		/**
+		 * @Route("/shop/api/v1/products/fetch_single_product/{aid}/{cid}/{pid}", name="rte_rest_fetch_single_product", defaults={"aid"=null, "cid"=null} )
+		 * @param int $aid
+		 * @param int $pid
+		 * @param Request $request
+		 *
+		 * @return \Symfony\Component\HttpFoundation\Response
+		 */
+		public function fetchSingleProduct(Request $request, $aid, $cid, $pid){
+			/**@var \Doctrine\DBAL\Connection $conn*/
+			$conn       = $this->getDoctrine()->getConnection();
+			$dbDriver   = $conn->getParams()['driver'];
+			$sql        = (new ProductBotProxy())->getSQL($dbDriver, $cid, $aid, $pid);
+			try {
+				$statement = $conn->prepare( $sql );
+			} catch ( DBALException $e ) {
+			}
+			$statement->execute();
+			$resultSet  = $statement->fetch(\PDO::FETCH_OBJ);
+			$header = [
+				'Access-Control-Allow-Origin'   => '*',
+				'Access-Control-Allow-Methods'  => 'GET, POST, OPTIONS',
+				'Access-Control-Max-Age'        => '86400',
+				'Content-Type'                  => 'application/json',
+			];
+			return new JsonResponse($resultSet, 200, $header);
+		}
+		
+		/**
+		 * @Route("/shop/api/v1/products/fetch_menu_items", name="rte_rest_fetch_menu_items")
+		 * @param Request $request
+		 *
+		 * @return \Symfony\Component\HttpFoundation\Response
+		 */
+		public function fetchCategoriesAsMenuItems(Request $request){
+			/**@var \Doctrine\DBAL\Connection $conn*/
+			$conn       = $this->getDoctrine()->getConnection();
+			$sql        = "SELECT * FROM " . TBL_CATS . " WHERE published=:PB";
+			try {
+				$statement = $conn->prepare( $sql );
+			} catch ( DBALException $e ) { }
+			$statement->execute(['PB' => 1]);
+			$resultSet  = $statement->fetchAll(\PDO::FETCH_OBJ);
+			$header = [
+				'Access-Control-Allow-Origin'   => '*',
+				'Access-Control-Allow-Methods'  => 'GET, POST, OPTIONS',
+				'Access-Control-Max-Age'        => '86400',
+				'Content-Type'                  => 'application/json',
+			];
+			return new JsonResponse($resultSet, 200, $header);
+		}
+		
+		/**
+		 * @Route("/shop/api/v1/products/fetch_all_items", name="rte_rest_fetch_all_items")
+		 * @param Request $request
+		 *
+		 * @return \Symfony\Component\HttpFoundation\Response
+		 */
+		public function fetchAllPublishedProducts(Request $request){
+			/**@var \Doctrine\DBAL\Connection $conn*/
+			$conn       = $this->getDoctrine()->getConnection();
+			$dbDriver   = $conn->getParams()['driver'];
+			$sql        = (new ProductBotProxy())->getSQL($dbDriver, null, null, null);
+			try {
+				$statement = $conn->prepare( $sql );
+			} catch ( DBALException $e ) {
+			}
+			$statement->execute();
+			$resultSet  = $statement->fetchAll(\PDO::FETCH_OBJ);
+			$header = [
+				'Access-Control-Allow-Origin'   => '*',
+				'Access-Control-Allow-Methods'  => 'GET, POST, OPTIONS',
+				'Access-Control-Max-Age'        => '86400',
+				'Content-Type'                  => 'application/json',
+			];
+			return new JsonResponse($resultSet, 200, $header);
+		}
+		
+		/**
+		 * @Route("/shop/api/v1/products/get_context_order_payload/{aid}/{cid}/{pid}", name="rte_rest_get_context_order_payload")
+		 * @var int $cid
+		 * @var int $pid
+		 * @var int $aid
+		 * @return \Symfony\Component\HttpFoundation\JsonResponse
+		 */
+		public function getContextPayload($aid, $cid, $pid) {
+			$header = [
+				'Access-Control-Allow-Origin'   => '*',
+				'Access-Control-Allow-Methods'  => 'GET, POST, OPTIONS',
+				'Access-Control-Max-Age'        => '86400',
+				'Content-Type'                  => 'application/json',
+			];
+			return new JsonResponse(CSOrderManager::get_context_payload( $cid, $pid, $aid ), 200, $header);
 		}
 	}
