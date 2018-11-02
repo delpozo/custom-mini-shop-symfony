@@ -20,7 +20,6 @@
         let relX        =   null;
         let relY        =   null;
 
-
         let cTip = {
             init: function(){
                 main.hover(this.overFX, this.outFX);
@@ -34,7 +33,7 @@
             mouseMoveAction:function(e){
                 let lbl_div = $("div.label_div");
                 relX        = e.pageX-( lbl_div.outerWidth()/2);
-                relY        = e.pageY+15;
+                relY = e.pageY+15;
 
                 lbl_div.css({
                     top:relY + "px",
@@ -44,7 +43,7 @@
 
             overFX: function(e){
                 let dis     = $(this);
-                if( !dis.attr('data-blind')){ 
+                if( !dis.attr('data-blind')){
                     title_attr  = $(dis).attr(config.tooltip_resource_attribute);
                     let lbl_div = $('div.label_div');
                     relX        = e.pageX-( lbl_div.outerWidth()/2);
@@ -53,8 +52,8 @@
 
                     dis.data('title', title_attr );
                     dis.attr('title', '');
-	
-	                lbl_div = $('.label_div').remove();
+
+                    $('.label_div').remove();
                     $("<div />", {
                         html: dis.data('title'),
                         "class": "label_div"
@@ -71,11 +70,11 @@
                             }).appendTo("div.label_div");
                     }
                     if(config.style_object != null){
-                        lbl_div.css(
+                        $('div.label_div').css(
                             config.style_object
                         );
                     }else{
-                        lbl_div.css({
+                        $("div.label_div").css({
                             padding:"10px",
                             background:"rgba(10, 18, 200, 0.5)",
                             borderRadius:"5px",
@@ -83,25 +82,26 @@
                         })
                     }
 
-                    lbl_div.css({
+                    $("div.label_div").css({
                         position:"absolute",
                         top:relY + "px",
                         left:relX + "px",
                         zIndex:999999,
                         backgroundPosition: "50% 50%"
                     }).hide();
-                    lbl_div.fadeIn({"duration":250, "easing":"easeInOutSine"});
+                    $("div.label_div").fadeIn({"duration":250, "easing":"easeInOutSine"});
                 }
             },
 
             outFX: function(evt){
                 let dis = $(this);
-                if( !dis.attr('data-blind')){ 
-                    $("div.label_div").fadeOut({"duration":150, "easing":"easeInOutSine"});
+                if( !dis.attr('data-blind')){
+                    $("div.label_div").fadeOut({"duration":150, "easing":"easeInOutSine", "complete": function(e){$(this).remove();}});
                 }
             }
         };
         cTip.init();
+
     };
 
 }(jQuery) );
